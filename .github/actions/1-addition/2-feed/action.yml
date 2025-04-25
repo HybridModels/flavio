@@ -176,7 +176,6 @@ runs:
       uses: devcontainers/ci@v0.3
       id: set_output
       with:
-        push: always
         imageTag: spin-${{ env.ID }}
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
@@ -187,6 +186,7 @@ runs:
           REMOTE_REPO=${{ env.REMOTE_REPO }}
           BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
+        push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
         runCmd: bash user_data/ft_client/test_client/test_rest_client.sh
 
     - name: 🪂 Remove existing images

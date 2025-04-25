@@ -149,6 +149,7 @@ next_repo() {
       "Organization not found: \($org)" | halt_error(1)
     else 
       .[$org_index] as $current_org |
+      (.[($org_index + 1) % length].login) as $next_org |
 
       if $repo == "\($org).github.io" then
         "\($org)/\($current_org.key1[0])"
@@ -166,7 +167,7 @@ next_repo() {
             if ($key2_index + 1) < ($current_org.key2 | length) then
               "\($org)/\($current_org.key2[$key2_index + 1])"
             else
-              "\($org)/\($org).github.io"
+              "\($next_org)/\($next_org).github.io"
             end
           else
             "Repository not found: \($repo)" | halt_error(1)
